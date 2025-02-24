@@ -14,22 +14,22 @@
 
 ---
 
-## 🏥 **Introducción**
+## 🔥 Introducción 🔥
 
 NeuroVISION es un sistema basado en **visión por computadora e inteligencia artificial** diseñado para la **detección y análisis de tumores cerebrales** en imágenes médicas.
+
 Utilizando técnicas de **machine learning y deep learning**, la plataforma analiza imágenes de **resonancia magnética (MRI)** para identificar la **probabilidad de presencia de tumores**, facilitando el diagnóstico temprano y la toma de decisiones médicas.
 
 Mediante un dashboard interactivo en **Streamlit**, NeuroVISION ofrece herramientas visuales de **segmentación de imágenes, estadísticas clave y generación automática de reportes** para médicos, radólogos y oncólogos.
 
 ---
 
-## 🎯 **Objetivo**
+## 🔥 Objetivo 🔥
 
-El propósito de **NeuroVISION** es:
-✅ **Detección automática de anomalías cerebrales** en imágenes médicas.
-✅ **Generación de reportes estructurados** con información clave sobre tumores.
-✅ **Optimización del diagnóstico** mediante herramientas basadas en datos.
-✅ **Facilitación del análisis visual** a través de dashboards interactivos.
+- **Detección automática de anomalías cerebrales** en imágenes médicas.
+- **Generación de reportes estructurados** con información clave sobre tumores.
+- **Optimización del diagnóstico** mediante herramientas basadas en datos.
+- **Facilitación del análisis visual** a través de dashboards interactivos.
 
 Este proyecto está diseñado para:
 - **Radólogos y médicos especialistas**, para agilizar el diagnóstico de tumores.
@@ -38,11 +38,10 @@ Este proyecto está diseñado para:
 
 ---
 
-## 🔬 **Metodología**
+## 🔥 Metodología 🔥
 
 NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CRISP-DM (Cross-Industry Standard Process for Data Mining)** para garantizar una gestión estructurada del análisis de datos.
 
-👌 **Proceso de desarrollo:**
 - **Preprocesamiento de imágenes**: Limpieza y conversión de imágenes médicas para su análisis.
 - **Entrenamiento del modelo**: Uso de **Keras** y **OpenCV** para segmentación y clasificación de tumores.
 - **Despliegue en Streamlit**: Implementación de un dashboard interactivo para visualizar resultados.
@@ -50,14 +49,14 @@ NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CR
 
 ---
 
-## 📊 **Datos**
+## 🔥 Datos 🔥
 
 - **Imágenes médicas** de resonancia magnética (MRI) utilizadas para entrenar y evaluar el modelo de clasificación.
 - **Conjunto de datos etiquetados** para determinar la probabilidad de presencia de tumor.
 
 ---
 
-## 📺 **Visualización en Streamlit**
+## 🔥 Visualización en Streamlit 🔥
 
 - **Panel interactivo** con carga de imágenes médicas y análisis en tiempo real.
 - **Segmentación automática** de regiones sospechosas en la imagen.
@@ -66,19 +65,21 @@ NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CR
 
 ---
 
-## 🛠️ **Herramientas utilizadas en el proyecto**
+## 🔥 Herramientas utilizadas en el proyecto 🔥
 
-- **Python**: Lenguaje de programación principal.
-- **OpenCV (cv2)**: Análisis de imágenes médicas.
-- **Keras**: Modelos de deep learning.
-- **Streamlit**: Dashboard interactivo.
-- **Slack**: Comunicación en equipo.
-- **Trello**: Gestión del proyecto.
-- **Google Drive**: Almacenamiento y colaboración.
+| Herramienta | Descripción |
+|------------|-------------|
+| **Python** | Lenguaje de programación principal. |
+| **OpenCV (cv2)** | Análisis de imágenes médicas. |
+| **Keras** | Modelos de deep learning. |
+| **Streamlit** | Dashboard interactivo. |
+| **Slack** | Comunicación en equipo. |
+| **Trello** | Gestión del proyecto. |
+| **Google Drive** | Almacenamiento y colaboración. |
 
 ---
 
-## 📞 **Contacto**
+## 🔥 Contacto 🔥
 
 | Nombre | Rol | GitHub | LinkedIn |
 |--------|---------|--------|---------|
@@ -90,5 +91,3 @@ NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CR
 | Nicolás Stassi | Data Analytics | [GitHub](https://github.com/nicostassi04) | [LinkedIn](https://www.linkedin.com/in/nicolás-stassi/) |
 
 ---
-
-🚀 **Este README puede actualizarse conforme avance el proyecto.**
