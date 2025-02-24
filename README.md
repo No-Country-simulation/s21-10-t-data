@@ -75,7 +75,7 @@ NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CR
 | **Keras**          | <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Keras_logo.svg" width="100" height="100">  | Framework de deep learning utilizado para entrenar el modelo de detección. |
 | **Streamlit**      | <img src="https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.png" width="100" height="100">  | Herramienta para crear el dashboard interactivo del sistema. |
 | **Slack**         | <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png" width="100" height="100"> | Plataforma de comunicación en equipo. |
-| **Trello**         | <img "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCbY1-Um96CJj5CiENgILgx12Sc6ZV-NPLdw&s" width="100" height="100">  | Gestión de tareas y planificación del proyecto. |
+| **Trello**         | <img scr="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCbY1-Um96CJj5CiENgILgx12Sc6ZV-NPLdw&s" width="100" height="100">  | Gestión de tareas y planificación del proyecto. |
 | **Google Drive**   | <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg" width="100" height="100"> | Almacenamiento y sincronización de archivos del equipo. |
 
 ---
