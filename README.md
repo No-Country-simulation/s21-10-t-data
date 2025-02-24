@@ -20,19 +20,20 @@ NeuroVISION es un sistema basado en **visión por computadora e inteligencia art
 
 Utilizando técnicas de **machine learning y deep learning**, la plataforma analiza imágenes de **resonancia magnética (MRI)** para identificar la **probabilidad de presencia de tumores**, facilitando el diagnóstico temprano y la toma de decisiones médicas.
 
-Mediante un dashboard interactivo en **Streamlit**, NeuroVISION ofrece herramientas visuales de **segmentación de imágenes, estadísticas clave y generación automática de reportes** para médicos, radólogos y oncólogos.
+Mediante un dashboard interactivo en **Streamlit**, NeuroVISION ofrece herramientas visuales de **segmentación de imágenes, estadísticas clave y generación automática de reportes** para médicos, radiólogos y oncólogos.
 
 ---
 
 ## 🔥 Objetivo 🔥
 
-- **Detección automática de anomalías cerebrales** en imágenes médicas.
-- **Generación de reportes estructurados** con información clave sobre tumores.
-- **Optimización del diagnóstico** mediante herramientas basadas en datos.
-- **Facilitación del análisis visual** a través de dashboards interactivos.
+- **Detectar anomalías cerebrales** en imágenes médicas mediante técnicas de visión por computadora y machine learning.
+- **Implementar modelos de segmentación y clasificación de tumores** para apoyar la toma de decisiones clínicas.
+- **Evaluar características morfológicas del cráneo y tumores** mediante análisis de imágenes.
+- **Optimizar la detección temprana y monitoreo de tumores** para mejorar la precisión y reducir tiempos de diagnóstico.
+- **Fomentar la toma de decisiones basada en datos** mediante herramientas analíticas avanzadas.
 
 Este proyecto está diseñado para:
-- **Radólogos y médicos especialistas**, para agilizar el diagnóstico de tumores.
+- **Radiólogos y médicos especialistas**, para agilizar el diagnóstico de tumores.
 - **Oncólogos**, para evaluar casos y decidir tratamientos basados en datos.
 - **Investigadores médicos**, para analizar patrones en la detección de tumores.
 
@@ -43,7 +44,7 @@ Este proyecto está diseñado para:
 NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CRISP-DM (Cross-Industry Standard Process for Data Mining)** para garantizar una gestión estructurada del análisis de datos.
 
 - **Preprocesamiento de imágenes**: Limpieza y conversión de imágenes médicas para su análisis.
-- **Entrenamiento del modelo**: Uso de **Keras** y **OpenCV** para segmentación y clasificación de tumores.
+- **Entrenamiento del modelo**: Uso de **Keras** y **OpenCV** para segmentación y clasificación binaria (tumor/no tumor).
 - **Despliegue en Streamlit**: Implementación de un dashboard interactivo para visualizar resultados.
 - **Generación de reportes**: Creación automática de documentos con hallazgos clave.
 
@@ -67,27 +68,27 @@ NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CR
 
 ## 🔥 Herramientas utilizadas en el proyecto 🔥
 
-| Herramienta | Descripción |
-|------------|-------------|
-| **Python** | Lenguaje de programación principal. |
-| **OpenCV (cv2)** | Análisis de imágenes médicas. |
-| **Keras** | Modelos de deep learning. |
-| **Streamlit** | Dashboard interactivo. |
-| **Slack** | Comunicación en equipo. |
-| **Trello** | Gestión del proyecto. |
-| **Google Drive** | Almacenamiento y colaboración. |
+| Herramienta         | Logo                                     | Descripción                                                                                                           |
+|---------------------|------------------------------------------|--------------------------------------------------------------------------------|
+| **Python**         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" width="100" height="100">  | Lenguaje de programación principal para el procesamiento de datos. |
+| **OpenCV (cv2)**   | <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/OpenCV_Logo_with_text_svg_version.svg" width="100" height="100">  | Librería de visión por computadora utilizada para el análisis de imágenes. |
+| **Keras**          | <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Keras_logo.svg" width="100" height="100">  | Framework de deep learning utilizado para entrenar el modelo de detección. |
+| **Streamlit**      | <img src="https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.png" width="100" height="100">  | Herramienta para crear el dashboard interactivo del sistema. |
+| **Slack**         | <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png" width="100" height="100"> | Plataforma de comunicación en equipo. |
+| **Trello**         | <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Trello-logo-blue.svg" width="100" height="100">  | Gestión de tareas y planificación del proyecto. |
+| **Google Drive**   | <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg" width="100" height="100"> | Almacenamiento y sincronización de archivos del equipo. |
 
 ---
 
 ## 🔥 Contacto 🔥
 
-| Nombre | Rol | GitHub | LinkedIn |
-|--------|---------|--------|---------|
-| Miguel Ismerio | Data Scientist / Project Manager | [GitHub](https://github.com/mikeismerio) | [LinkedIn](https://www.linkedin.com/in/miguel-ismerio/) |
-| Antonia Soler | Machine Learning Developer | [GitHub](https://github.com/asoler2004) | [LinkedIn](https://www.linkedin.com/in/antonia-soler-7a2811230) |
-| Daniel Carrillo | Data Scientist | [GitHub](https://github.com/Carrillo1992) | [LinkedIn](https://www.linkedin.com/in/daniel-carrillo-b04a862a2) |
-| Esteban Gonzalez | Data Scientist | [GitHub](https://github.com/andresgvelasquez) | [LinkedIn](https://www.linkedin.com/in/andres946/) |
-| Lucel Da Silva | Data Analytics | [GitHub](https://github.com/luceldasilva) | [LinkedIn](https://www.linkedin.com/in/luceldasilva/) |
-| Nicolás Stassi | Data Analytics | [GitHub](https://github.com/nicostassi04) | [LinkedIn](https://www.linkedin.com/in/nicolás-stassi/) |
+| Integrantes         |                                     | Rol                                   | GitHub                                        | LinkedIn                                                                           |
+|---------------------|-------------------------------------|---------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------|
+| Miguel Ismerio | <img src="https://github.com/No-Country-simulation/s18-18-t-data-bi/blob/main/img/Miguel.png" width="100" height="100" style="border-radius: 50%;">  | **Data Scientist / Project Manager** | [GitHub](https://github.com/mikeismerio) | [LinkedIn](https://www.linkedin.com/in/miguel-ismerio/)  |
+| Antonia Soler      | <img src="https://github.com/No-Country-simulation/s18-18-t-data-bi/blob/main/img/Antonia.jpg" width="100" height="100" style="border-radius: 50%;">      | Machine Learning Developer | [GitHub](https://github.com/asoler2004) | [LinkedIn](https://www.linkedin.com/in/antonia-soler-7a2811230)  |
+| Daniel Carrillo    | Data Scientist | [GitHub](https://github.com/Carrillo1992) | [LinkedIn](https://www.linkedin.com/in/daniel-carrillo-b04a862a2)  |
+| Lucel Da Silva     | Data Analytics | [GitHub](https://github.com/luceldasilva) | [LinkedIn](https://www.linkedin.com/in/luceldasilva/)  |
 
 ---
+
+🚀 **Este README puede actualizarse conforme avance el proyecto.**
