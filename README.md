@@ -1,6 +1,6 @@
 # 🧠 NeuroVISION: Detección de Tumores en Imágenes Médicas 🏥
 
-![image](https://github.com/No-Country-simulation/NeuroVISION/blob/main/img/Portada.jpg)
+![image](https://github.com/No-Country-simulation/s21-10-t-data/blob/main/img/portada.jpg)
 
 ### 📝 Índice:
 
