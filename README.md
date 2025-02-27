@@ -84,7 +84,7 @@ NeuroVISION sigue una metodología **Agile Scrum**, integrando el estándar **CR
 
 | Integrantes         |                                     | Rol                                   | GitHub                                        | LinkedIn                                                                           |
 |---------------------|-------------------------------------|---------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------|
-| Miguel Ismerio | <img src="https://github.com/No-Country-simulation/s18-18-t-data-bi/blob/main/img/Miguel.png" width="100" height="100" style="border-radius: 50%;">  | **Data Scientist / Project Manager** | [GitHub](https://github.com/mikeismerio) | [LinkedIn](https://www.linkedin.com/in/miguel-ismerio/)  |
+| Miguel Ismerio | <img src="https://github.com/No-Country-simulation/s18-18-t-data-bi/blob/main/img/Miguel.png" width="100" height="100" style="border-radius: 50%;">  | **Data Scientist** | [GitHub](https://github.com/mikeismerio) | [LinkedIn](https://www.linkedin.com/in/miguel-ismerio/)  |
 | x2   | <img src="https://github.com/No-Country-simulation/s18-18-t-data-bi/blob/main/img/Antonia.jpg" width="100" height="100" style="border-radius: 50%;">      | Machine Learning Developer | [GitHub](https://github.com/asoler2004) | [LinkedIn](https://www.linkedin.com/in/antonia-soler-7a2811230)  |
 | x2   | Data Scientist | [GitHub](https://github.com/Carrillo1992) | [LinkedIn](https://www.linkedin.com/in/daniel-carrillo-b04a862a2)  |
 | x2     | Data Analytics | [GitHub](https://github.com/luceldasilva) | [LinkedIn](https://www.linkedin.com/in/luceldasilva/)  |
