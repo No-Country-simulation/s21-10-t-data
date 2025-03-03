@@ -6,20 +6,33 @@ from tensorflow.keras.models import load_model
 import sys
 import io
 import matplotlib.pyplot as plt
+import os
 
 # =================== CONFIGURACIÓN DE LA PÁGINA ===================
 st.set_page_config(layout="wide", page_title="🧠 Clasificación de Tumores Cerebrales")
 
 st.title("🧠 Clasificación de Tumores Cerebrales")
 st.write(f"📌 **Versión de Python en Streamlit Cloud:** `{sys.version}`")
+st.write(f"🔹 **Versión de TensorFlow:** `{tf.__version__}`")
 
 # =================== CARGAR MODELO ===================
-st.write("📥 **Cargando modelo brain-tumor-detection-acc-96-4-cnn.h5...**")
-model_path = "brain-tumor-detection-acc-96-4-cnn.h5"
+MODEL_H5_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
+MODEL_TF_PATH = "brain-tumor-detection-acc-96-4-cnn"
+
+st.write(f"📥 **Cargando modelo...**")
+
+model = None
 
 try:
-    model = load_model(model_path, compile=False)
-    st.success("✅ Modelo cargado exitosamente")
+    if os.path.exists(MODEL_H5_PATH):
+        model = load_model(MODEL_H5_PATH, compile=False)
+        st.success("✅ Modelo cargado exitosamente desde archivo H5")
+    elif os.path.exists(MODEL_TF_PATH):
+        model = tf.keras.models.load_model(MODEL_TF_PATH)
+        st.success("✅ Modelo cargado exitosamente desde formato TensorFlow SavedModel")
+    else:
+        st.error("❌ No se encontró ningún modelo en la carpeta. Verifica que el archivo está correctamente subido.")
+        st.stop()
 except Exception as e:
     st.error(f"❌ Error al cargar el modelo: {str(e)}")
     st.stop()
@@ -42,30 +55,8 @@ if uploaded_file:
         st.image(image, caption="Imagen original", width=400)
 
         # 🔹 Preprocesamiento para el modelo
-        image_resized = cv2.resize(image, (224, 224))
-        image_rgb = cv2.cvtColor(image_resized, cv2.COLOR_GRAY2RGB)
-        image_array = np.expand_dims(image_rgb, axis=0)
+        image_resized = cv2.resize(image, (224, 224))  # Ajustar tamaño
+        image_rgb = cv2.cvtColor(image_resized, cv2.COLOR_GRAY2RGB)  # Convertir a 3 canales
+        image_array = np.expand_dims(image_rgb, axis=0)  # Expandir dimensiones
 
-        # =================== REALIZAR PREDICCIÓN ===================
-        st.write("🔍 **Analizando la imagen...**")
-        predictions = model.predict(image_array)
-        predicted_class_idx = np.argmax(predictions)
-        predicted_class = CLASSES[predicted_class_idx]
-        probability = predictions[0][predicted_class_idx]
-
-        # Mostrar resultados de la CNN
-        st.subheader(f"📌 **Diagnóstico del Modelo:** `{predicted_class}`")
-        st.write(f"📊 **Confianza del Modelo:** `{probability:.2%}`")
-
-        # Mostrar distribución de probabilidades
-        fig, ax = plt.subplots()
-        ax.bar(CLASSES, predictions[0], color=['blue', 'orange', 'green', 'red'])
-        ax.set_ylabel("Probabilidad")
-        ax.set_title("Distribución de Predicciones")
-        st.pyplot(fig)
-
-        # Mensaje final basado en la predicción
-        if predicted_class == "No Tumor":
-            st.success("✅ **No se detectó presencia de tumor en la imagen.**")
-        else:
-            st.warning(f"⚠️ **Posible detección de un `{predicted_class}`. Se recomienda análisis clínico detallado.**")
+        # =================== REALIZAR P
