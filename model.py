@@ -1,7 +1,7 @@
-import tensorflow as tf
+from tensorflow.keras.models import load_model
 
-# Cargar el modelo con una versión anterior si tienes acceso
-model = tf.keras.models.load_model("brain-tumor-detection-acc-96-4-cnn.h5", compile=False)
-
-# Guardar en formato actualizado
-model.save("brain-tumor-detection-acc-96-4-cnn.h5", save_format="h5")
+try:
+    model = load_model("brain-tumor-detection-acc-96-4-cnn.h5", compile=False)
+    print("Modelo cargado correctamente")
+except Exception as e:
+    print(f"Error al cargar el modelo: {str(e)}")
