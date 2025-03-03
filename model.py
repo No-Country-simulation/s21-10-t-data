@@ -13,15 +13,34 @@ import tempfile
 MODEL_URL = "https://github.com/No-Country-simulation/s21-10-t-data/raw/main/brain-tumor-detection-acc-96-4-cnn.h5"
 MODEL_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
 
-# Descargar el modelo si no existe
-if not os.path.exists(MODEL_PATH):
-    st.write("Descargando el modelo, por favor espera...")
-    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-    st.write("Modelo descargado exitosamente.")
+# Función para descargar el modelo con verificación
+def download_model():
+    try:
+        st.write("Descargando el modelo, por favor espera...")
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+        if os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) > 0:
+            st.write("Modelo descargado exitosamente.")
+        else:
+            st.error("Error en la descarga del modelo. Inténtalo de nuevo.")
+            return False
+        return True
+    except Exception as e:
+        st.error(f"Error al descargar el modelo: {e}")
+        return False
 
-# Cargar el modelo entrenado
-model = load_model(MODEL_PATH, compile=False)
-st.write("Modelo cargado correctamente.")
+# Verificar y descargar el modelo si no existe
+if not os.path.exists(MODEL_PATH) or os.path.getsize(MODEL_PATH) == 0:
+    success = download_model()
+    if not success:
+        st.stop()
+
+# Cargar el modelo entrenado con manejo de errores
+try:
+    model = load_model(MODEL_PATH, compile=False)
+    st.write("Modelo cargado correctamente.")
+except Exception as e:
+    st.error(f"Error al cargar el modelo: {e}")
+    st.stop()
 
 def preprocess_image(image):
     """
