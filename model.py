@@ -1,84 +1,96 @@
 import streamlit as st
 import os
-import urllib.request
 import numpy as np
+import cv2
 import tensorflow as tf
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 
-# URL del modelo en GitHub
-MODEL_URL = "https://github.com/No-Country-simulation/s21-10-t-data/blob/main/brain-tumor-detection-acc-96-4-cnn.h5"
-MODEL_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
+# =================== CONFIGURACIÓN DE LA PÁGINA ===================
+st.set_page_config(layout="wide", page_title="🧠 Detección y Segmentación de Tumores")
+st.title("🧠 Detección y Segmentación de Tumores Cerebrales")
 
-# Función para descargar y verificar el modelo
-def download_model():
-    try:
-        st.write("Descargando el modelo, por favor espera...")
-        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-        
-        # Verificar si el archivo se descargó correctamente
-        if os.path.exists(MODEL_PATH):
-            file_size = os.path.getsize(MODEL_PATH) / (1024 * 1024)  # Convertir a MB
-            st.write(f"Modelo descargado exitosamente. Tamaño: {file_size:.2f} MB")
-            if file_size < 1:  # Si el tamaño es menor a 1MB, es probable que esté corrupto
-                st.error("Error: El modelo parece estar corrupto o incompleto.")
-                os.remove(MODEL_PATH)  # Eliminar el archivo defectuoso
-                return False
-        else:
-            st.error("Error: No se pudo descargar el modelo.")
-            return False
-        return True
-    except Exception as e:
-        st.error(f"Error al descargar el modelo: {e}")
-        return False
+# =================== CARGAR MODELO ===================
+model_path = "brain-tumor-detection-acc-80-2.h5"
+st.write(f"📥 **Cargando modelo {model_path}...**")
 
-# Verificar y descargar el modelo si no existe o está corrupto
-if not os.path.exists(MODEL_PATH) or os.path.getsize(MODEL_PATH) == 0:
-    success = download_model()
-    if not success:
-        st.stop()
-
-# Intentar cargar el modelo
 try:
-    model = load_model(MODEL_PATH, compile=False)
-    st.write("✅ Modelo cargado correctamente.")
+    model = load_model(model_path, compile=False)
+    st.success("✅ Modelo cargado exitosamente")
 except Exception as e:
-    st.error(f"❌ Error al cargar el modelo: {e}")
-    st.write("Revisa que el modelo sea un archivo .h5 válido y que no esté dañado.")
+    st.error(f"❌ Error al cargar el modelo: {str(e)}")
     st.stop()
 
-def preprocess_image(image):
-    """
-    Preprocesar una imagen para la clasificación de tumores cerebrales.
-    """
-    image = image.convert('RGB')  # Asegurar que la imagen esté en formato RGB
-    image = image.resize((224, 224))  # Redimensionar la imagen al tamaño esperado por la CNN
-    image = img_to_array(image)
-    image = np.expand_dims(image, axis=0)  # Añadir dimensión de batch
-    image = image / 255.0  # Normalizar los valores de píxeles
-    return image
+# =================== SUBIR UNA IMAGEN ===================
+uploaded_file = st.file_uploader("📸 **Sube una imagen médica (JPG, PNG)**", type=["jpg", "jpeg", "png"])
 
-# Interfaz en Streamlit
-st.title("🧠 Detección de Tumores Cerebrales en MRI")
-st.write("Sube una imagen de resonancia magnética y el modelo clasificará si hay presencia de un tumor.")
+if uploaded_file:
+    # Leer la imagen y convertirla en array
+    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    image = cv2.imdecode(file_bytes, cv2.IMREAD_GRAYSCALE)
 
-uploaded_file = st.file_uploader("Sube una imagen", type=["jpg", "jpeg", "png"])
+    if image is not None:
+        # Mostrar imagen original
+        st.image(image, caption="Imagen original", width=400)
+        
+        # Preprocesamiento para el modelo
+        image_resized = cv2.resize(image, (224, 224))
+        image_rgb = cv2.cvtColor(image_resized, cv2.COLOR_GRAY2RGB)
+        image_array = np.expand_dims(image_rgb, axis=0) / 255.0
 
-if uploaded_file is not None:
-    # Mostrar la imagen cargada
-    image = Image.open(uploaded_file)
-    st.image(image, caption="Imagen cargada", use_column_width=True)
-    
-    # Preprocesar la imagen
-    processed_image = preprocess_image(image)
-    
-    # Realizar la predicción
-    prediction = model.predict(processed_image)[0]
-    classes = ["No Tumor", "Tumor"]  # Ajusta según el orden de salida del modelo
-    predicted_class = classes[np.argmax(prediction)]
-    confidence = np.max(prediction) * 100
-    
-    # Mostrar resultado
-    st.subheader("Resultado de la Predicción:")
-    st.write(f"**{predicted_class}** con una confianza del **{confidence:.2f}%**")
+        # =================== REALIZAR PREDICCIÓN ===================
+        st.write("🔍 **Analizando la imagen...**")
+        prediction = model.predict(image_array)
+        probability = prediction[0][0]
+        threshold = 0.7
+        tumor_detected = probability >= threshold
+        diagnosis = "Tumor Detectado" if tumor_detected else "No se detectó Tumor"
+
+        # Mostrar resultados de la CNN
+        st.subheader(f"📌 **Diagnóstico del Modelo:** `{diagnosis}`")
+        st.write(f"📊 **Probabilidad de Tumor:** `{probability:.2%}`")
+
+        # =================== SEGMENTACIÓN ===================
+        if tumor_detected:
+            st.warning("⚠️ **El modelo ha detectado un posible tumor. Segmentando...**")
+            pixel_spacing = 0.04  # cm/píxel
+            blurred = cv2.GaussianBlur(image, (7, 7), 2)
+            _, thresholded = cv2.threshold(blurred, 120, 255, cv2.THRESH_BINARY)
+            contours, _ = cv2.findContours(thresholded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            min_area_threshold = 200
+            tumor_contour = max(contours, key=cv2.contourArea) if contours else None
+
+            if tumor_contour is not None and cv2.contourArea(tumor_contour) > min_area_threshold:
+                area_pixels = cv2.contourArea(tumor_contour)
+                area_cm2 = area_pixels * (pixel_spacing ** 2)
+                M = cv2.moments(tumor_contour)
+                cx = int(M["m10"] / M["m00"]) if M["m00"] != 0 else 0
+                cy = int(M["m01"] / M["m00"]) if M["m00"] != 0 else 0
+                
+                tumor_image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+                cv2.drawContours(tumor_image, [tumor_contour], -1, (0, 255, 0), 2)
+                cv2.circle(tumor_image, (cx, cy), 5, (0, 0, 255), -1)
+                
+                mask = np.zeros_like(image, dtype=np.uint8)
+                cv2.drawContours(mask, [tumor_contour], -1, 255, thickness=cv2.FILLED)
+                tumor_region = cv2.bitwise_and(image, image, mask=mask)
+                heatmap = cv2.applyColorMap(tumor_region, cv2.COLORMAP_JET)
+                heatmap = cv2.addWeighted(tumor_image, 0.6, heatmap, 0.4, 0)
+                
+                # 📌 Mostrar segmentación
+                st.image([image, cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)], width=400)
+                
+                # 📌 Mostrar métricas del tumor
+                st.write(f"🧠 **Área del tumor:** `{area_cm2:.2f} cm²`")
+                st.write(f"📌 **Ubicación del tumor (Centro):** `({cx}, {cy})` en píxeles")
+                
+                # 📌 Mostrar resultados finales
+                if area_cm2 > 10:
+                    st.warning("⚠️ **El tumor es grande. Se recomienda un análisis más detallado.**")
+                else:
+                    st.success("✅ **El tumor es de tamaño pequeño o moderado.**")
+            else:
+                st.error("❌ No se detectaron tumores en la imagen.")
+        else:
+            st.success("✅ **El modelo no detectó un tumor significativo en la imagen.**")
