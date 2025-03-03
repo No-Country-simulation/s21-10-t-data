@@ -1,7 +1,11 @@
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 
+model_path = "brain-tumor-detection-acc-96-4-cnn.h5"
+
 try:
-    model = load_model("brain-tumor-detection-acc-96-4-cnn.h5", compile=False)
-    print("Modelo cargado correctamente")
+    print("Intentando cargar el modelo...")
+    model = load_model(model_path, compile=False)
+    print("✅ Modelo cargado correctamente.")
 except Exception as e:
-    print(f"Error al cargar el modelo: {str(e)}")
+    print("❌ Error al cargar el modelo:", e)
