@@ -13,7 +13,7 @@ st.write(f"📌 **Versión de TensorFlow:** `{tf.__version__}`")
 # =================== CARGAR MODELO ===================
 st.header("📥 Cargando Modelo...")
 
-MODEL_H5_PATH = "brain-tumor-detection-acc-80-2.h5"
+MODEL_H5_PATH = "braintumor2.h5"
 
 # Verificar si el archivo existe
 if not os.path.isfile(MODEL_H5_PATH):
