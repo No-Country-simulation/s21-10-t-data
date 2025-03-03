@@ -12,7 +12,7 @@ st.write(f"📌 **Versión de Python en Streamlit Cloud:** `{tf.__version__}`")
 
 # =================== CARGAR MODELO ===================
 st.header("📥 Cargando Modelo...")
-MODEL_H5_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
+MODEL_H5_PATH = "brain-tumor-detection-acc-80-2.h5"
 
 # Verificar si el archivo existe
 if not os.path.exists(MODEL_H5_PATH):
