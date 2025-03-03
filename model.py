@@ -1,38 +1,47 @@
 import streamlit as st
+import cv2
+import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
-import sys
-import os
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array
+from PIL import Image
+import tempfile
 
-# =================== CONFIGURACIÓN DE LA PÁGINA ===================
-st.set_page_config(layout="wide", page_title="🧠 Clasificación de Tumores Cerebrales")
+# Cargar el modelo entrenado
+MODEL_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"  # Asegúrate de que el modelo esté en esta ruta
+model = load_model(MODEL_PATH)
 
-st.title("🧠 Clasificación de Tumores Cerebrales")
-st.write(f"📌 **Versión de TensorFlow:** `{tf.__version__}`")
+def preprocess_image(image):
+    """
+    Preprocesar una imagen para la clasificación de tumores cerebrales.
+    """
+    image = image.convert('RGB')  # Asegurar que la imagen esté en formato RGB
+    image = image.resize((224, 224))  # Redimensionar la imagen al tamaño esperado por la CNN
+    image = img_to_array(image)
+    image = np.expand_dims(image, axis=0)  # Añadir dimensión de batch
+    image = image / 255.0  # Normalizar los valores de píxeles
+    return image
 
-# =================== CARGAR MODELO ===================
-st.header("📥 Cargando Modelo...")
+# Interfaz en Streamlit
+st.title("🧠 Detección de Tumores Cerebrales en MRI")
+st.write("Sube una imagen de resonancia magnética y el modelo clasificará si hay presencia de un tumor.")
 
-MODEL_H5_PATH = "braintumor2.h5"
+uploaded_file = st.file_uploader("Sube una imagen", type=["jpg", "jpeg", "png"])
 
-# Verificar si el archivo existe
-if not os.path.isfile(MODEL_H5_PATH):
-    st.error(f"❌ No se encontró el archivo `{MODEL_H5_PATH}`. Asegúrate de subirlo.")
-    st.stop()
-
-# Intentar cargar el modelo
-try:
-    model = load_model(MODEL_H5_PATH, compile=False)
-    st.success("✅ Modelo cargado exitosamente")
-except Exception as e:
-    st.error(f"❌ Error al cargar el modelo. Detalles: {str(e)}")
-    st.stop()
-
-# Mostrar resumen del modelo si se carga correctamente
-try:
-    st.subheader("📊 Resumen del modelo:")
-    model_summary = []
-    model.summary(print_fn=lambda x: model_summary.append(x))
-    st.text("\n".join(model_summary))
-except Exception as e:
-    st.warning(f"⚠️ No se pudo mostrar el resumen del modelo. Error: {str(e)}")
+if uploaded_file is not None:
+    # Mostrar la imagen cargada
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Imagen cargada", use_column_width=True)
+    
+    # Preprocesar la imagen
+    processed_image = preprocess_image(image)
+    
+    # Realizar la predicción
+    prediction = model.predict(processed_image)[0]
+    classes = ["No Tumor", "Tumor"]  # Ajusta según el orden de salida del modelo
+    predicted_class = classes[np.argmax(prediction)]
+    confidence = np.max(prediction) * 100
+    
+    # Mostrar resultado
+    st.subheader("Resultado de la Predicción:")
+    st.write(f"**{predicted_class}** con una confianza del **{confidence:.2f}%**")
