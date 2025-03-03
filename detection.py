@@ -15,7 +15,7 @@ st.write(f"📌 **Versión de Python en Streamlit Cloud:** `{sys.version}`")
 
 # =================== CARGAR MODELO ===================
 st.write("📥 **Cargando modelo 2025-19-02_VGG_model.h5...**")
-model_path = "2025-19-02_VGG_model.h5"
+model_path = "brain-tumor-detection-acc-80-2.h5"
 
 try:
     model = load_model(model_path, compile=False)
