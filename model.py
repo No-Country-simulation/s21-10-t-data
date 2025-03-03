@@ -1,11 +1,9 @@
-import tensorflow as tf
-from tensorflow.keras.models import load_model
+import h5py
 
 model_path = "brain-tumor-detection-acc-96-4-cnn.h5"
 
 try:
-    print("Intentando cargar el modelo...")
-    model = load_model(model_path, compile=False)
-    print("✅ Modelo cargado correctamente.")
+    with h5py.File(model_path, 'r') as f:
+        print("✅ El archivo es un archivo HDF5 válido.")
 except Exception as e:
-    print("❌ Error al cargar el modelo:", e)
+    print("❌ El archivo NO es un modelo HDF5 válido. Error:", e)
