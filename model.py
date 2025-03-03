@@ -8,7 +8,7 @@ from keras.preprocessing.image import img_to_array
 from PIL import Image
 
 # URL del modelo en GitHub
-MODEL_URL = "https://github.com/No-Country-simulation/s21-10-t-data/raw/main/brain-tumor-detection-acc-96-4-cnn.h5"
+MODEL_URL = "https://github.com/No-Country-simulation/s21-10-t-data/blob/main/brain-tumor-detection-acc-96-4-cnn.h5"
 MODEL_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
 
 # Función para descargar y verificar el modelo
