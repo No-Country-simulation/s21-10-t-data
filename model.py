@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import urllib.request
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -7,9 +9,19 @@ from keras.preprocessing.image import img_to_array
 from PIL import Image
 import tempfile
 
+# URL del modelo en GitHub
+MODEL_URL = "https://github.com/No-Country-simulation/s21-10-t-data/raw/main/brain-tumor-detection-acc-96-4-cnn.h5"
+MODEL_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
+
+# Descargar el modelo si no existe
+if not os.path.exists(MODEL_PATH):
+    st.write("Descargando el modelo, por favor espera...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    st.write("Modelo descargado exitosamente.")
+
 # Cargar el modelo entrenado
-MODEL_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"  # Asegúrate de que el modelo esté en esta ruta
-model = load_model(MODEL_PATH)
+model = load_model(MODEL_PATH, compile=False)
+st.write("Modelo cargado correctamente.")
 
 def preprocess_image(image):
     """
