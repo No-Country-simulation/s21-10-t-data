@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 import tensorflow as tf
 from tensorflow.keras.models import load_model
+from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 
@@ -21,7 +22,8 @@ if model_file is not None:
     
     st.write(f"📥 **Cargando modelo desde {model_file.name}...**")
     try:
-        model = load_model(model_path, compile=False)
+        custom_objects = {"BatchNormalization": BatchNormalization}  # Para evitar errores de deserialización
+        model = load_model(model_path, compile=False, custom_objects=custom_objects)
         st.success("✅ Modelo cargado exitosamente")
     except Exception as e:
         st.error(f"❌ Error al cargar el modelo: {str(e)}")
