@@ -12,7 +12,7 @@ st.set_page_config(layout="wide", page_title="🧠 Detección y Segmentación de
 st.title("🧠 Detección y Segmentación de Tumores Cerebrales")
 
 # =================== CARGAR MODELO ===================
-model_path = "brain-tumor-detection-acc-80-2.h5"
+model_path = "braintumor2.h5"
 st.write(f"📥 **Cargando modelo {model_path}...**")
 
 try:
