@@ -11,15 +11,23 @@ from PIL import Image
 st.set_page_config(layout="wide", page_title="🧠 Detección y Segmentación de Tumores")
 st.title("🧠 Detección y Segmentación de Tumores Cerebrales")
 
-# =================== CARGAR MODELO ===================
-model_path = "braintumor2.h5"
-st.write(f"📥 **Cargando modelo {model_path}...**")
+# =================== CARGAR MODELO DESDE ARCHIVO ===================
+model_file = st.file_uploader("📥 **Sube tu modelo en formato .h5**", type=["h5"])
 
-try:
-    model = load_model(model_path, compile=False)
-    st.success("✅ Modelo cargado exitosamente")
-except Exception as e:
-    st.error(f"❌ Error al cargar el modelo: {str(e)}")
+if model_file is not None:
+    model_path = "uploaded_model.h5"
+    with open(model_path, "wb") as f:
+        f.write(model_file.getbuffer())
+    
+    st.write(f"📥 **Cargando modelo desde {model_file.name}...**")
+    try:
+        model = load_model(model_path, compile=False)
+        st.success("✅ Modelo cargado exitosamente")
+    except Exception as e:
+        st.error(f"❌ Error al cargar el modelo: {str(e)}")
+        st.stop()
+else:
+    st.warning("⚠️ **Por favor, sube un modelo .h5 para continuar.**")
     st.stop()
 
 # =================== SUBIR UNA IMAGEN ===================
