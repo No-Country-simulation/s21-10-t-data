@@ -1,59 +1,56 @@
 import streamlit as st
-import os
 import numpy as np
-import cv2
 import tensorflow as tf
-from tensorflow.keras.models import load_model
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 
-# =================== CONFIGURACIÓN DE LA PÁGINA ===================
-st.set_page_config(layout="wide", page_title="🧠 Clasificación de Tumores Cerebrales")
-st.title("🧠 Clasificación de Tumores Cerebrales")
+# Definir el modelo simplificado
+def create_model():
+    model = Sequential([
+        Conv2D(16, (3, 3), activation='relu', input_shape=(150, 150, 3)),
+        MaxPooling2D(pool_size=(2, 2)),
+        
+        Conv2D(32, (3, 3), activation='relu'),
+        MaxPooling2D(pool_size=(2, 2)),
+        
+        Conv2D(64, (3, 3), activation='relu'),
+        MaxPooling2D(pool_size=(2, 2)),
+        
+        Flatten(),
+        Dense(256, activation='relu'),
+        Dropout(0.3),
+        Dense(4, activation='softmax')
+    ])
+    return model
 
-# =================== CARGAR MODELO DESDE ARCHIVO ===================
-model_file = st.file_uploader("📥 **Sube tu modelo en formato .h5**", type=["h5"])
+# Cargar el modelo preentrenado
+model = create_model()
+model.load_weights("brain-tumor-detection-acc-99-4C-cnn.h5")  # Asegurar que el archivo está en la misma carpeta
 
-if model_file is not None:
-    model_path = "uploaded_model.h5"
-    with open(model_path, "wb") as f:
-        f.write(model_file.getbuffer())
-    
-    st.write(f"📥 **Cargando modelo desde {model_file.name}...**")
-    try:
-        custom_objects = {"BatchNormalization": BatchNormalization}  # Para evitar errores de deserialización
-        model = load_model(model_path, compile=False, custom_objects=custom_objects)
-        st.success("✅ Modelo cargado exitosamente")
-    except Exception as e:
-        st.error(f"❌ Error al cargar el modelo: {str(e)}")
-        st.stop()
-else:
-    st.warning("⚠️ **Por favor, sube un modelo .h5 para continuar.**")
-    st.stop()
+# Clases
+CLASS_TYPES = ['Pituitary', 'No Tumor', 'Meningioma', 'Glioma']
 
-# =================== SUBIR UNA IMAGEN ===================
-uploaded_file = st.file_uploader("📸 **Sube una imagen médica (JPG, PNG)**", type=["jpg", "jpeg", "png"])
+st.title("Brain Tumor Detection App")
+st.write("Sube una imagen de MRI para detectar si hay un tumor y su tipo.")
 
-if uploaded_file:
-    # Leer la imagen y convertirla en array
+uploaded_file = st.file_uploader("Sube una imagen de MRI", type=["jpg", "png", "jpeg"])
+
+if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Imagen cargada", width=400)
+    st.image(image, caption="Imagen subida", use_column_width=True)
     
-    # Preprocesamiento para el modelo
-    image = image.convert('RGB')  # Asegurar que la imagen está en RGB
-    image = image.resize((224, 224))  # Redimensionar la imagen al tamaño esperado por el modelo
-    image_array = img_to_array(image)
-    image_array = np.expand_dims(image_array, axis=0) / 255.0  # Normalizar la imagen
+    # Preprocesar la imagen
+    image = image.resize((150, 150))
+    image = img_to_array(image)
+    image = np.expand_dims(image, axis=0) / 255.0  # Normalización
     
-    # =================== REALIZAR PREDICCIÓN ===================
-    st.write("🔍 **Analizando la imagen...**")
-    prediction = model.predict(image_array)[0]
-    classes = ["No Tumor", "Tumor"]  # Ajusta según la estructura del modelo
-    predicted_class = classes[np.argmax(prediction)]
+    # Hacer la predicción
+    prediction = model.predict(image)
+    pred_class = CLASS_TYPES[np.argmax(prediction)]
     confidence = np.max(prediction) * 100
     
-    # Mostrar resultado
-    st.subheader("📌 **Resultado de la Clasificación:**")
-    st.write(f"🧠 **Clase Predicha:** `{predicted_class}`")
-    st.write(f"📊 **Confianza:** `{confidence:.2f}%`")
+    st.subheader(f"Predicción: {pred_class}")
+    st.write(f"Confianza: {confidence:.2f}%")
