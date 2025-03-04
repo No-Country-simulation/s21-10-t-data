@@ -13,9 +13,9 @@ import h5py
 def create_model():
     base_model = Xception(weights=None, include_top=False, input_shape=(150, 150, 3))
     x = GlobalAveragePooling2D()(base_model.output)
-    x = Dense(512, activation="relu")(x)
-    x = Dropout(0.5)(x)
-    output = Dense(4, activation="softmax")(x)
+    x = Dense(512, activation="relu", name="dense")(x)
+    x = Dropout(0.5, name="dropout")(x)
+    output = Dense(4, activation="softmax", name="dense_1")(x)
     model = Model(inputs=base_model.input, outputs=output)
     return model
 
@@ -38,19 +38,20 @@ if uploaded_model is not None:
             st.warning("El archivo solo contiene pesos, se usará la arquitectura de Xception.")
             model = create_model()
             
-            # Depuración: Mostrar capas del modelo cargado
+            # Depuración: Mostrar capas esperadas en el modelo
+            expected_layers = [layer.name for layer in model.layers]
+            available_layers = list(file["model_weights"].keys())
+            
             st.write("Capas esperadas en el modelo creado:")
-            for layer in model.layers:
-                st.write(layer.name)
+            st.write(expected_layers)
             
-            # Depuración: Mostrar capas disponibles en los pesos
             st.write("Capas disponibles en los pesos:")
-            for layer_name in file["model_weights"].keys():
-                st.write(layer_name)
+            st.write(available_layers)
             
+            # Cargar solo los pesos coincidentes
             try:
-                model.load_weights("temp_model.h5")
-                st.success("Pesos cargados correctamente.")
+                model.load_weights("temp_model.h5", by_name=True, skip_mismatch=True)
+                st.success("Pesos cargados parcialmente, ignorando capas faltantes.")
             except Exception as e:
                 st.error(f"Error al cargar los pesos: {e}")
                 st.stop()
