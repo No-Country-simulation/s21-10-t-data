@@ -47,6 +47,17 @@ if uploaded_model is not None:
         if "model_weights" in file.keys():
             st.warning("El archivo solo contiene pesos, se usará la arquitectura original del modelo.")
             model = create_model()
+            
+            # Depuración: Mostrar capas del modelo cargado
+            st.write("Capas esperadas en el modelo creado:")
+            for layer in model.layers:
+                st.write(layer.name)
+            
+            # Depuración: Mostrar capas disponibles en los pesos
+            st.write("Capas disponibles en los pesos:")
+            for layer_name in file["model_weights"].keys():
+                st.write(layer_name)
+            
             try:
                 model.load_weights("temp_model.h5")
                 st.success("Pesos cargados correctamente.")
