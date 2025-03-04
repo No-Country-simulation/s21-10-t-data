@@ -6,3 +6,4 @@ matplotlib
 pillow
 keras
 urllib3
+h5py
