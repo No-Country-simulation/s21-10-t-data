@@ -1,32 +1,22 @@
 import streamlit as st
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.applications import Xception
 from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.models import load_model, Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.models import load_model, Model
+from tensorflow.keras.layers import Dense, Dropout, Flatten, GlobalAveragePooling2D
 from PIL import Image
 import os
 import h5py
 
-# Definir la arquitectura del modelo original
+# Definir la arquitectura del modelo basada en Xception
 def create_model():
-    model = Sequential([
-        Conv2D(32, (4, 4), activation="relu", input_shape=(150, 150, 3)),
-        MaxPooling2D(pool_size=(3, 3)),
-
-        Conv2D(64, (4, 4), activation="relu"),
-        MaxPooling2D(pool_size=(3, 3)),
-
-        Conv2D(128, (4, 4), activation="relu"),
-        MaxPooling2D(pool_size=(3, 3)),
-
-        Conv2D(128, (4, 4), activation="relu"),
-        Flatten(),
-
-        Dense(512, activation="relu"),
-        Dropout(0.5),
-        Dense(4, activation="softmax")
-    ])
+    base_model = Xception(weights=None, include_top=False, input_shape=(150, 150, 3))
+    x = GlobalAveragePooling2D()(base_model.output)
+    x = Dense(512, activation="relu")(x)
+    x = Dropout(0.5)(x)
+    output = Dense(4, activation="softmax")(x)
+    model = Model(inputs=base_model.input, outputs=output)
     return model
 
 # Clases
@@ -45,7 +35,7 @@ if uploaded_model is not None:
     # Verificar si el archivo contiene un modelo completo o solo pesos
     with h5py.File("temp_model.h5", "r") as file:
         if "model_weights" in file.keys():
-            st.warning("El archivo solo contiene pesos, se usará la arquitectura original del modelo.")
+            st.warning("El archivo solo contiene pesos, se usará la arquitectura de Xception.")
             model = create_model()
             
             # Depuración: Mostrar capas del modelo cargado
