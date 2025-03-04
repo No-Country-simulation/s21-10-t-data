@@ -1,6 +1,8 @@
 import streamlit as st
 import tensorflow as tf
 import numpy as np
+import zipfile
+import os
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 
@@ -13,20 +15,35 @@ CLASS_LABELS = {0: "Glioma", 1: "Meningioma", 2: "No Tumor", 3: "Pituitary"}
 
 # Cargar el modelo desde la PC
 st.sidebar.header("📥 Subir Modelo")
-uploaded_model = st.sidebar.file_uploader("Sube el modelo (.h5 o carpeta SavedModel)", type=["h5", "zip"])
+uploaded_model = st.sidebar.file_uploader("Sube el modelo (.h5 o .zip para SavedModel)", type=["h5", "zip"])
 
 # Verificar si se subió el modelo
 model = None
+
 if uploaded_model:
     try:
         if uploaded_model.name.endswith(".h5"):
-            # Guardar el archivo temporalmente y cargarlo
             with open("temp_model.h5", "wb") as f:
                 f.write(uploaded_model.getbuffer())
-            model = tf.keras.models.load_model("temp_model.h5")
-            st.sidebar.success("✅ Modelo cargado correctamente.")
+
+            # Cargar modelo con custom_objects para evitar errores de BatchNormalization
+            model = tf.keras.models.load_model("temp_model.h5", custom_objects={"BatchNormalization": tf.keras.layers.BatchNormalization})
+            st.sidebar.success("✅ Modelo .h5 cargado correctamente.")
+
+        elif uploaded_model.name.endswith(".zip"):
+            with open("temp_model.zip", "wb") as f:
+                f.write(uploaded_model.getbuffer())
+
+            # Extraer el modelo en formato SavedModel
+            with zipfile.ZipFile("temp_model.zip", "r") as zip_ref:
+                zip_ref.extractall("saved_model_dir")
+
+            model = tf.keras.models.load_model("saved_model_dir")
+            st.sidebar.success("✅ Modelo SavedModel cargado correctamente.")
+
         else:
-            st.sidebar.error("❌ Solo se admiten archivos .h5 por ahora.")
+            st.sidebar.error("❌ Solo se admiten archivos .h5 o .zip para SavedModel.")
+
     except Exception as e:
         st.sidebar.error(f"⚠️ Error al cargar el modelo: {e}")
 
