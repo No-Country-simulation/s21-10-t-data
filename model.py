@@ -9,8 +9,6 @@ import os
 import h5py
 
 # Definir la arquitectura del modelo original
-# Esta es la misma arquitectura utilizada para entrenar los pesos
-
 def create_model():
     model = Sequential([
         Conv2D(32, (4, 4), activation="relu", input_shape=(150, 150, 3)),
@@ -49,12 +47,20 @@ if uploaded_model is not None:
         if "model_weights" in file.keys():
             st.warning("El archivo solo contiene pesos, se usará la arquitectura original del modelo.")
             model = create_model()
-            model.load_weights("temp_model.h5")
+            try:
+                model.load_weights("temp_model.h5")
+                st.success("Pesos cargados correctamente.")
+            except Exception as e:
+                st.error(f"Error al cargar los pesos: {e}")
+                st.stop()
         else:
-            model = load_model("temp_model.h5")
+            try:
+                model = load_model("temp_model.h5")
+                st.success("Modelo completo cargado correctamente.")
+            except Exception as e:
+                st.error(f"Error al cargar el modelo: {e}")
+                st.stop()
     
-    st.success("Modelo cargado exitosamente")
-
     uploaded_file = st.file_uploader("Sube una imagen de MRI", type=["jpg", "png", "jpeg"])
 
     if uploaded_file is not None:
