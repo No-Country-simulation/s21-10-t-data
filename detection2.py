@@ -16,7 +16,7 @@ st.write(f"📌 **Versión de Python en Streamlit Cloud:** `{sys.version}`")
 st.write(f"🔹 **Versión de TensorFlow:** `{tf.__version__}`")
 
 # =================== CARGAR MODELO ===================
-MODEL_H5_PATH = "brain-tumor-detection-acc-96-4-cnn.h5"
+MODEL_H5_PATH = "braintumor2.h5"
 MODEL_TF_PATH = "brain-tumor-detection-acc-96-4-cnn"
 
 st.write(f"📥 **Cargando modelo...**")
