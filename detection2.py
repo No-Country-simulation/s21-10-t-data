@@ -17,7 +17,7 @@ st.write(f"🔹 **Versión de TensorFlow:** `{tf.__version__}`")
 
 # =================== CARGAR MODELO ===================
 MODEL_H5_PATH = "braintumor2.h5"
-MODEL_TF_PATH = "braintumor2"
+MODEL_TF_PATH = "braintumor2.h5"
 
 st.write(f"📥 **Cargando modelo...**")
 
